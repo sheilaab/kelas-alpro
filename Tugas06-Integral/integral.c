@@ -1,36 +1,39 @@
 #include <stdio.h>
 #include <math.h>
-#include <stdlib.h>
-double fungsi_utama(double x) {
+
+// Fungsi yang akan diintegralkan (fungsi kelompok kami (x+2)^2)
+double fungsi(double x) {
     return (x+2)*(x+2);
 }
 
-void main(){
-    int jumlah_subinterval;
-    double hasil=0.0,batas_bawah,batas_atas,delta_x,x_i;
+// Metode trapesium untuk menghitung integral
+double trapesium(double alas_a, double alas_b, int n) {
+    double h = (alas_b - alas_a) / n;
+    double integral = (fungsi(alas_a) + fungsi(alas_b)) / 4.0;
 
-    do
-    {
-        printf("Masukan batas atas : "); scanf("%lf",&batas_atas);
-        printf("Masukan batas bawah : "); scanf("%lf",&batas_bawah);
-        printf("Masukan Jumlah subinterval: "); scanf("%d",&jumlah_subinterval);
-        system("clear");
-        printf("Jumlah interval tidak boleh negatif!!!\n\n");
-        printf("Masukan angka lain!!\n\n");
-    } while (jumlah_subinterval < 0);
-    system("cls");
-
-    delta_x = (batas_atas-batas_bawah)/jumlah_subinterval;
-    
-    int i = 1;
-
-    while (i<=jumlah_subinterval)
-    {
-        x_i = batas_bawah + i*delta_x;
-        hasil += 2*fungsi_utama(x_i);
-        i+=1;
+    for (int i = 1; i < n; i++) {
+        double x = alas_a + i * h;
+        integral += fungsi(x);
     }
-    hasil+=(fungsi_utama(batas_atas)+fungsi_utama(batas_bawah));
-    hasil*=(delta_x/2);
-    printf("Hasil perkiraan integral adalah %lf\n",hasil);
+
+    return integral * h;
+}
+
+int main() {
+    double batas_bawah = 0; // Batas bawah
+    double batas_atas = 4;  // Batas atas
+    int N;
+
+    printf("Masukkan jumlah sub-interval: ");
+    scanf("%d", &N);
+
+    double hasilNumerik = trapesium(batas_bawah, batas_atas, N);
+
+    // Perhitungan integral secara analitik 
+    double hasilAnalitik = (batas_atas * batas_atas * batas_atas / 3) - (batas_bawah * batas_bawah * batas_bawah / 3);
+
+    printf("Hasil integral metode trapezoid: %lf\n", hasilNumerik);
+    printf("Hasil integral analitik : %lf\n", hasilAnalitik);
+
+    return 0;
 }
