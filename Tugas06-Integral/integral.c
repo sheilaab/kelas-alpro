@@ -1,36 +1,35 @@
 #include <stdio.h>
-#include <math.h>
-#include <stdlib.h>
-double fungsi_utama(double x) {
+
+//(fungsi kelompok kami (x+2)^2)
+double fungsi(double x) {
     return (x+2)*(x+2);
 }
 
-void main(){
-    int jumlah_subinterval;
-    double hasil=0.0,batas_bawah,batas_atas,delta_x,x_i;
 
-    do
-    {
-        printf("Masukan batas atas : "); scanf("%lf",&batas_atas);
-        printf("Masukan batas bawah : "); scanf("%lf",&batas_bawah);
-        printf("Masukan Jumlah subinterval: "); scanf("%d",&jumlah_subinterval);
-        system("clear");
-        printf("Jumlah interval tidak boleh negatif!!!\n\n");
-        printf("Masukan angka lain!!\n\n");
-    } while (jumlah_subinterval < 0);
-    system("cls");
+double trapesium(double a, double b, int n) {
+    double h = (b - a) / n;
+    double integral = (fungsi(a) + fungsi(b)) / 4;
 
-    delta_x = (batas_atas-batas_bawah)/jumlah_subinterval;
-    
-    int i = 1;
-
-    while (i<=jumlah_subinterval)
-    {
-        x_i = batas_bawah + i*delta_x;
-        hasil += 2*fungsi_utama(x_i);
-        i+=1;
+    for (int i = 1; i < n; i++) {
+        double x = a + i * h;
+        integral += fungsi(x);
     }
-    hasil+=(fungsi_utama(batas_atas)+fungsi_utama(batas_bawah));
-    hasil*=(delta_x/2);
-    printf("Hasil perkiraan integral adalah %lf\n",hasil);
+
+    return integral * h;
+}
+
+int main() {
+    double batas_bawah = 0; 
+    double batas_atas = 4;  
+    int N;
+
+    printf("Masukkan nilai intervalnya: ");
+    scanf("%d", &N);
+
+    double hasil = trapesium(batas_bawah, batas_atas, N);
+
+
+    printf("Hasil integral: %lf\n", hasil);
+
+    return 0;
 }
