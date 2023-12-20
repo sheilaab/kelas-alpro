@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define SIZE 100
+#define SIZE 1000
 #include<time.h>
 
 size_t binarySearch(const int b[], int searchKey, size_t low, size_t high);
@@ -15,15 +15,21 @@ int main(){
     int searchKey;
     scanf("%d", &searchKey);
 
+    clock_t begin = clock();
     size_t index = binarySearch(a, searchKey, LOW, HIGH);
+    clock_t end = clock();
+
     if (index != -1)
     {
-        printf("Found value at index %d\n", index);
+        printf("Found value at index %ld\n", index);
     }
     else
     {
         puts("Value not found");
     }
+
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("Waktu yang didapat adalah %f detik\n\n", time_spent);
 }
 
 size_t binarySearch(const int b[], int searchKey, size_t low, size_t high){
